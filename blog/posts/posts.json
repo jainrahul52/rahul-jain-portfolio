@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "title": "Emerging Technologies: Shaping the Future 🌐",
+      "date": "2025-09-16",
+      "file": "emerging-technologies.md",
+      "excerpt": "An overview of AI, Quantum Computing, XR, Biotechnology, and Green Tech with figures."
+    },
+    {
+  "title": "Why We Can't Ignore Deep Learning Anymore: It's Powering Our Future",
+  "date": "2025-09-14",
+  "file": "DeepLearning.md",
+  "excerpt": "Introduction to my Deep Learning journey and its transformative impact on technology.",
+  "tags": ["AI", "Deep Learning", "Technology"]
+}
+
+  ]
+}

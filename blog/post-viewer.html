@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Blog Post — Rahul Jain</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <!-- Load Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="container">  
+
+    <header class="header">
+      <div class="brand">
+        <img class="avatar" src="../assets/photo.png" alt="Rahul Jain">
+        <div><h1 id="postTitle">Loading…</h1></div>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="../blog.html">Blog</a>
+      </nav>
+    </header>
+
+    <section id="post" class="section">
+      <!-- Meta info (date + excerpt) -->
+      <p id="postMeta" class="meta"></p>
+
+      <!-- Post content -->
+      <div id="postContent" class="card"></div>
+    </section>
+
+    <footer class="footer">© 2025 Rahul Jain</footer>
+  </div>
+
+  <script>
+  // get ?file= param from URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  const file = getQueryParam('file');
+  const titleEl = document.getElementById('postTitle');
+  const contentEl = document.getElementById('postContent');
+  const metaEl = document.getElementById('postMeta');
+
+  if(file){
+    // 1. Load the markdown file
+    fetch('posts/' + file)
+      .then(res => res.text())
+      .then(md => {
+        // Extract first heading (line starting with "# ")
+        const match = md.match(/^#\s+(.+)/m);
+        if (match) {
+          titleEl.textContent = match[1]; // Use heading as title
+        } else {
+          titleEl.textContent = "Untitled Post";
+        }
+
+        // Render markdown content
+        contentEl.innerHTML = marked.parse(md);
+      })
+      .catch(err => {
+        titleEl.textContent = "Error loading post";
+        contentEl.innerHTML = "<p class='meta'>Could not fetch this post.</p>";
+      });
+
+    // 2. Try to also load metadata from posts.json
+    fetch('posts/posts.json')
+      .then(res => res.json())
+      .then(data => {
+        const post = data.posts.find(p => p.file === file);
+        if (post) {
+          metaEl.textContent = `${post.date} • ${post.excerpt || ''}`;
+        }
+      })
+      .catch(err => {
+        console.warn("Could not load post metadata", err);
+      });
+
+  } else {
+    titleEl.textContent = "No post specified";
+    contentEl.innerHTML = "<p class='meta'>Please access via Blog → Read Post.</p>";
+  }
+  </script>
+</body>
+</html>
